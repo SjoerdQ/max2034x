@@ -262,6 +262,18 @@ impl<I: HardwareInterface, BF: OutputPin, BI: InputPin, S: InitializedState>
         Ok(())
     }
 
+    /// Buck-Boost Integrator Enable. (BBSTINTEGEN)
+    /// The Integrator can be disabled to improve settling time on load transients at
+    /// the cost of load regulation error. Latched internally, it can only be changed
+    /// when the output of the buck boost is disabled (BBstEn = 0).
+    pub fn enable_integrator(&mut self, enabled: bool) -> Result<(), I> {
+        self.ll
+            .registers()
+            .b_bst_cfg1()
+            .modify(|_, w| w.b_bst_integ_en(Bit::from(enabled)))?;
+        Ok(())
+    }
+
     /// Enable or disable fast boost using the boost_fast pin.
     /// Does nothing if the passed pin is `None`.
     /// Be sure to enable the fast boost bin using
