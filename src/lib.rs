@@ -279,7 +279,7 @@ impl<I: HardwareInterface, BF: OutputPin, BI: InputPin, S: InitializedState>
     /// Read `boost_nint` pin level, indicating whether an interrupt is active.
     /// Returns `false` if the passed pin in `None`.
     pub fn interrupt_active(&mut self) -> core::result::Result<bool, BI::Error> {
-        match &self.pins.boost_nint.as_mut() {
+        match self.pins.boost_nint.as_mut() {
             Some(p) => p.is_low(),
             None => Ok(false),
         }
